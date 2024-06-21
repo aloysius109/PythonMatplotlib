@@ -160,8 +160,7 @@ TotalAppsTop20Applied
 OtherCountries = TotalApps-TotalAppsTop20Applied
 OtherCountries
 #%%Pie chart of the proportion asylum applications received between the Top 20 and all other countries
-# Create data for plotting
-# Create the labels for the pie cart
+# Create the labels for the pie chart
 Countries = ['Top 20 Countries', 'All Other Countries']
 # Set the data to be used
 data = [TotalAppsTop20Applied, OtherCountries]
@@ -181,7 +180,7 @@ plt.title('\nProportion of Asylum Applications Received: \n\nTop 20 Countries an
 plt.legend(loc = 'lower left', fontsize = 14)
 # And save the figure as a PNG in your working directory
 plt.savefig("AppVolumesPieChart.png")
-#%%Plot the 2017 Onwards data in a line chart
+#%%Plot the application volumes from January 2017 to June 2023 in a line chart
 # Create the data for the x-axis
 countries = UNTotalAppsDecs2017On['Country of asylum (ISO)'].head(20)
 # Set the integer position of each point on the x-axis
