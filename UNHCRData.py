@@ -159,11 +159,15 @@ TotalAppsTop20Applied
 #Calculate the number of applications to other countries
 OtherCountries = TotalApps-TotalAppsTop20Applied
 OtherCountries
-#%%1. Pie chart of the proportion asylum applications received between the Top 20 and all other countries
-# Creating dataset
+#%%Pie chart of the proportion asylum applications received between the Top 20 and all other countries
+# Create data for plotting
+# Create the labels for the pie cart
 Countries = ['Top 20 Countries', 'All Other Countries']
+# Set the data to be used
 data = [TotalAppsTop20Applied, OtherCountries]
+# Choose the colours of each segment
 colors = ('#002664', '#FC9D9A')
+# And plot
 fig = plt.figure(figsize = (10,15))
 plt.pie(data, labels=Countries,
         autopct=lambda pct: func(pct, data),
@@ -172,7 +176,51 @@ plt.pie(data, labels=Countries,
         colors = colors,
         wedgeprops = {"edgecolor" : "w", 
                       'linewidth': 2})
+# Add title, legend
 plt.title('\nProportion of Asylum Applications Received: \n\nTop 20 Countries and All Other Countries, 2017 to June 2023', fontsize = 20, color = '#000000', pad = 20)
 plt.legend(loc = 'lower left', fontsize = 14)
-#plt.tight_layout
+# And save the figure as a PNG in your working directory
 plt.savefig("AppVolumesPieChart.png")
+#%%Plot the 2017 Onwards data in a line chart
+# Create the data for the x-axis
+countries = UNTotalAppsDecs2017On['Country of asylum (ISO)'].head(20)
+# Set the integer position of each point on the x-axis
+pos = np.arange(len(countries))
+# Create the data for the y-axis
+applications=UNTotalAppsDecs2017On['applied'].head(20)
+#%% Plot a line plot of application volumes between January 2017 and June 2023, for each of the Top 20 countires
+fig, ax = plt.subplots(figsize=(50, 20))
+plt.plot(applications, '-o', linewidth = 5, color = '#002664')
+plt.xticks(pos, countries, size = 20)
+plt.yticks(size = 20)
+#Format the y-axis so it has thousand-value commas
+plt.gca().yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+# Remove axes splines
+for s in ['top', 'bottom', 'left', 'right']:
+    ax.spines[s].set_visible(False)
+# Remove the tick marks (- and | from both axes)
+plt.tick_params(
+    axis='y',
+    which='both',
+    left=False,
+    right=False)
+plt.tick_params(
+    axis='x',
+    which='both',
+    top=False,
+    bottom=False)
+# Add title and labels
+plt.title('Asylum Applications: Top 20 Countries: 2017 to June 2023',color = '#000000',fontsize=24, pad = 20)
+plt.xlabel('Country of Asylum (ISO)',color = '#000000', fontsize = 20, labelpad = 30)
+plt.ylabel('Applications', color = '#000000',fontsize = 20, labelpad = 30)
+# Set the y-ticks to empty
+plt.yticks([])
+# Add annotations that show the application volumes for each country
+for x,y in zip(pos,applications):
+    label = "{:,.0f}".format(y)
+    if x != pos[9] and y!= applications[9]:
+        plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center', size =20, bbox=dict(boxstyle="round,pad=0.3",fc="white", ec="#002664", lw=1))
+    if x == pos[9] and y == applications[9]:
+        plt.annotate(label, (x,y),textcoords="offset points", xytext=(0,10), ha='center', size =20,color = 'w', bbox=dict(boxstyle="round,pad=0.3",fc="#732282", ec="#732282", lw=2))
+# Save the plot as a PNG in your working directory
+plt.savefig("Applications2017To23.png", bbox_inches = 'tight')
